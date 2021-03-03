@@ -32,7 +32,7 @@ sudo apt update
 sudo apt install curl -y
 git_tarball_url="https://www.github.com$(curl 'https://github.com/git/git/tags' | grep -o "/git/git/archive/v2\..*\.tar\.gz" | sort -r | head -1 | tr -d '\n')"
 echo "DOWNLOADING FROM: ${git_tarball_url}"
-curl -L --retry 5 "${git_tarball_url}" --output "git-source.tar.gz"
+curl -LZ --retry 5 "${git_tarball_url}" --output "git-source.tar.gz"
 tar -xf "git-source.tar.gz" --strip 1
 
 # Source dependencies
@@ -56,7 +56,7 @@ make configure
 #    Running ripgrep on configure shows that --with-openssl is set by default. Since this could change in the
 #    future we do it explicitly
 ./configure --prefix=/usr --with-openssl
-make 
+make -j$(($(nproc)+2))
 if [[ "${SKIPTESTS}" != "YES" ]]; then
   make test
 fi
