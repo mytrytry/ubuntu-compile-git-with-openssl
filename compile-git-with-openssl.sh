@@ -31,6 +31,7 @@ cd "${BUILDDIR}"
 apt update
 apt install curl -y
 
+
 # get latest version
 
 command -v gojq || go get github.com/itchyny/gojq/cmd/gojq
